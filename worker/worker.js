@@ -1,4 +1,6 @@
-import { is_directory, determine_content_type, normalize_path } from './utils'
+import mime from 'mime/lite';
+
+import { is_directory, normalize_path } from './utils'
 
 addEventListener('fetch', event => {
   event.respondWith(handleRequest(event.request))
@@ -18,7 +20,7 @@ async function handleRequest(request) {
       return Response.redirect(request.url + '/', 301)
     }
 
-    var contentType = determine_content_type(path)
+    var contentType = mime.getType(path)
 
     let body = await STATIC_CONTENT.get(path, 'arrayBuffer')
     let res = new Response(body, { status: 200 })
