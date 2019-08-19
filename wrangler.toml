@@ -1,0 +1,9 @@
+name = "worker-site"
+type = "webpack"
+route = ""
+zone_id = ""
+account_id = ""
+
+[[kv-namespaces]]
+binding = "STATIC_CONTENT"
+id = ""
