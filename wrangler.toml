@@ -1,9 +1,42 @@
-name = "worker-site"
+## JEKYLL
+# [env.prod]
+name = "worker-site-jekyll"
 type = "webpack"
 route = ""
 zone_id = ""
 account_id = ""
+assets = { directory = "../jekyll-site/_site", kv = "STATIC_CONTENT" }
 
 [[kv-namespaces]]
 binding = "STATIC_CONTENT"
-id = ""
+# run `wrangler kv create "Site Content - Staging" and insert the generated id here
+id = "c417513a199c4289a1a0c8385c58a0e7"
+
+# ## GATSBY
+# # [env.prod]
+# name = "worker-site-gatsby"
+# type = "webpack"
+# route = ""
+# zone_id = ""
+# account_id = ""
+# assets = { directory = "../gatsby-site/public", kv = "STATIC_CONTENT" }
+
+# [[kv-namespaces]]
+# binding = "STATIC_CONTENT"
+# # run `wrangler kv create "Site Content - Staging" and insert the generated id here
+# id = "1f44a56679a040f0bb01ba39599ba704"
+
+# # HUGO
+# # [env.prod]
+# name = "worker-site-hugo"
+# type = "webpack"
+# route = ""
+# zone_id = ""
+# account_id = ""
+# assets = { directory = "../hugo-site/public", kv = "STATIC_CONTENT" }
+
+# [[kv-namespaces]]
+# binding = "STATIC_CONTENT"
+# # run `wrangler kv create "Site Content - Staging" and insert the generated id here
+# id = "9d28bd2bbb2c4e489006d7d8afa61f07"
+
