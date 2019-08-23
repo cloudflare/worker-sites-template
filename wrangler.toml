@@ -6,9 +6,15 @@ zone_id = ""
 account_id = ""
 [[kv-namespaces]]
 binding = "STATIC_CONTENT"
+# why share namespace tag but not account/zone tags? 
+# the tags should probably just all be blank
 id = "c417513a199c4289a1a0c8385c58a0e7"
 bucket = "../jekyll-site/_site"
+# this folder nor `../` actually exist and is confusing
+# for templates we try to make as generic as possible
+# why not just make this `./public` or `./files` or some name ? 
 
+# for environment template should be explained in a seperate env template
 # # [env.gatsby]
 # name = "worker-site-gatsby"
 # type = "webpack"
