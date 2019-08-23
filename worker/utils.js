@@ -1,4 +1,8 @@
 export function normalize_path(path) {
+  // this logic was added by Steve for the specific hugo structure of our dev docs
+  // are you sure we want this? 
+  // we should not assume one is using hugo/any site generator
+  // we should just explain how to serve the file tree as their corresponding public paths 
   // strip first slash
   path = path.replace(/^\/+/, '')
   // root page
