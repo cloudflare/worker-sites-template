@@ -24,17 +24,15 @@ export function handleStaticRequest(responseHandler) {
 async function getAssets(event) {
   try {
     const cache = caches.default;
-    const req = getCacheKey(event.request);
-    const path = new URL(req.url).pathname;
+    const req = cacheKey(event.request);
 
     if (
-      req.method === "GET"
+      req
       // static content is our KV bucket binding
       && typeof __STATIC_CONTENT !== "undefined"
-      // TODO: asset manifest should be a text_blob binding
-      && path in __STATIC_ASSET_MANIFEST
     ) {
-      let res = await cache.match(req);
+      const path = new URL(req.url).pathname;
+      let res = await cache.match(cacheKey);
 
       if (res) {
         return res;
@@ -42,7 +40,7 @@ async function getAssets(event) {
 
       const contentType = mime.getType(path);
       const body = await __STATIC_CONTENT.get(
-        __STATIC_ASSET_MANIFEST[path],
+        path,
         "arrayBuffer"
       );
 
@@ -72,16 +70,11 @@ async function getAssets(event) {
  * cache busting. Depending on implementation, the asset manifest may help us here.
  */
 function getCacheKey(request) {
-  const contentType = mime.getType(request.url.pathname);
+  if (request.method !== "GET") return;
+  const path = request.url.pathname;
+  let manifestPath = __STATIC_ASSET_MANIFEST[path];
 
-  if (contentType === mime.getType('html')) {
-    let url = new URL(request.url)
-    // TODO: version should be a secret name binding
-    url.pathname = url.pathname + __VERSION
+  let newUrl = new URL(manifestPath, request.url.origin)
 
-    // Convert to a GET to be able to cache
-    return new Request(url, {headers: request.headers, method: 'GET'})
-  }
-
-  return request
+  return new Request(newUrl, request)
 }
