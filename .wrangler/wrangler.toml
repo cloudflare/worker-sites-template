@@ -2,5 +2,13 @@ account_id = ""
 name = "worker"
 type = "webpack"
 route = ""
-workers_dot_dev = true
 zone_id = ""
+workers_dot_dev = true
+# Proposal for "static" top level config for sites.
+# Could also rename to "sites"
+# bucket configures the directory to be uploaded (ties in with kv:bucket)
+# prefix configures the path prefix, if any, that assets should be requested from
+# immutable configures a glob identifier for assets that should be served with
+# "Cache-Control": "max-age=31536000, immutable"
+# (this is things like favicon, etc)
+static = { bucket = "./public", prefix = "/blog", immutable = "/static/**/*" }
