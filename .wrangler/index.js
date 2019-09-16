@@ -3,17 +3,23 @@
 // event calls, but for now we should probably just provide a guideline.
 import { handleApiRequests } from './api'
 
-import { handleStaticRequests } from './static/assets'
-import { handleNotFound } from './static/notfound'
+import { handleStaticRequests, handleNotFound } from './static'
+
+// This is optional; we want to encourage people to play with their
+// responses if they so choose bc that's a unique feature, but it's
+// completely unnecessary.
+function modifyStaticResponse(response) {
+	// do something with the response
+	return response
+}
 
 // handleStaticRequests should deal with getting stuff out of KV
 // should not require that the user declare "routing", since
 // the asset manifest will have that encapsulated.
 // the response handler should be optional
-const myStaticHandler = handleStaticRequests(response => {
-	// do something with the response
-	return response
-})
+const myStaticHandler = handleStaticRequests(modifyStaticResponse)
+
+let myNotFound = handleNotFound(eventHandler)
 
 let middlewares = [
 	handleApiRequests,
