@@ -1,42 +1,25 @@
 import mime from 'mime/lite';
 
-export function handleStaticRequest(responseHandler) {
-  return event => {
-    getAssets(event).then(response => {
-      if (response) {
-        if (responseHandler) {
-          // user-provided response handler for things
-          // like HTMLRewriter
-          response = responseHandler(response)
-        }
-        event.respondWith(response)
-      }
-    }).catch(e => {
-      // handle exception
-    })
-  }
-}
-
 /**
  * Fetch and log a request
  * @param {Request} request
  */
-async function getAssets(event) {
+export async function handleStaticRequest(event) {
   try {
     const cache = caches.default;
-    const req = cacheKey(event.request);
+    const req = getCacheKey(event.request);
 
     if (
       req
       // static content is our KV bucket binding
       && typeof __STATIC_CONTENT !== "undefined"
     ) {
-      const path = new URL(req.url).pathname;
-      let res = await cache.match(cacheKey);
+      const path = normalize_path(new URL(req.url).pathname);
+      // let res = await cache.match(req);
 
-      if (res) {
-        return res;
-      }
+      // if (res) {
+      //   return res;
+      // }
 
       const contentType = mime.getType(path);
       const body = await __STATIC_CONTENT.get(
@@ -44,19 +27,21 @@ async function getAssets(event) {
         "arrayBuffer"
       );
 
-      res = new Response(body, { status: 200 });
+      let res = new Response(body, { status: 200 });
       res.headers.set("Content-Type", contentType);
 
-      // TODO: immutable asset glob should be secret_name (env var) binding
-      if (__IMMUTABLE_ASSETS.some(cachePath => minimatch(path, cachePath))) {
-        res.headers.set("Cache-Control", "max-age=31536000, immutable");
-        event.waitUntil(cache.put(req, res));
-      }
+      // // TODO: immutable asset glob should be secret_name (env var) binding
+      // if (__IMMUTABLE_ASSETS.some(cachePath => minimatch(path, cachePath))) {
+      //   res.headers.set("Cache-Control", "max-age=31536000, immutable");
+      //   event.waitUntil(cache.put(req, res));
+      // }
 
-      return res;
+      return res || new Response("not found", { status: 404 })
     }
   // first iteration: swallow the error and fall back to Not Found(?)
-  } catch(e) {}
+  } catch(e) {
+    console.log(e)
+  }
 }
 
 /**
@@ -71,10 +56,33 @@ async function getAssets(event) {
  */
 function getCacheKey(request) {
   if (request.method !== "GET") return;
+  if (typeof __STATIC_ASSET_MANIFEST === "undefined") return request
   const path = request.url.pathname;
   let manifestPath = __STATIC_ASSET_MANIFEST[path];
 
   let newUrl = new URL(manifestPath, request.url.origin)
+  console.log(newUrl)
 
   return new Request(newUrl, request)
+}
+
+/**
+ * gets the path to look up in KV
+ * e.g. /dir/ -> dir/index.html
+ * @param {*} path
+ * TODO: handle this in wrangler asset manifest logic
+ */
+export function normalize_path(path) {
+  // strip first slash
+  path = path.replace(/^\/+/, '')
+  // root page
+  if (path == '') {
+    return 'index.html'
+    // directory page with a trailing /
+  } else if (path.endsWith('/')) {
+    return path + 'index.html'
+    // normal path, no need to do anything!
+  } else {
+    return path
+  }
 }

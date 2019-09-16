@@ -3,7 +3,7 @@ name = "worker"
 type = "webpack"
 route = ""
 zone_id = ""
-workers_dot_dev = true
+workers_dev = true
 kv-namespaces = [
 	{ binding = "__STATIC_CONTENT", id = "", bucket = "./public" }
 ]
