@@ -2,16 +2,18 @@ import mime from 'mime/lite';
 
 export function handleStaticRequest(responseHandler) {
   return event => {
-    let response = await getAssets(event)
-
-    if (response) {
-      if (responseHandler) {
-        // user-provided response handler for things
-        // like HTMLRewriter
-        response = responseHandler(response)
+    getAssets(event).then(response => {
+      if (response) {
+        if (responseHandler) {
+          // user-provided response handler for things
+          // like HTMLRewriter
+          response = responseHandler(response)
+        }
+        event.respondWith(response)
       }
-      event.respondWith(response)
-    }
+    }).catch(e => {
+      // handle exception
+    })
   }
 }
 
