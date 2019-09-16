@@ -60,3 +60,28 @@ async function getAssets(event) {
   // first iteration: swallow the error and fall back to Not Found(?)
   } catch(e) {}
 }
+
+/**
+ * For most static sites, you don't want to cache html. you certainly don't
+ * want to tell the browser to. But if we version these things at the edge,
+ * we can add a little caching magic even to html files?
+ * NOTE: there is a potential race condition here!!!
+ * if we upload to kv and update the worker with the new version, AND THEN the
+ * new worker is called before the new content write has been completed, the worker
+ * will cache the old version as the new and it will be worse than if we did no
+ * cache busting. Depending on implementation, the asset manifest may help us here.
+ */
+function getCacheKey(request) {
+  const contentType = mime.getType(request.url.pathname);
+
+  if (contentType === mime.getType('html')) {
+    let url = new URL(request.url)
+    // TODO: version should be a secret name binding
+    url.pathname = url.pathname + __VERSION
+
+    // Convert to a GET to be able to cache
+    return new Request(url, {headers: request.headers, method: 'GET'})
+  }
+
+  return request
+}
