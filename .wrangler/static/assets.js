@@ -6,12 +6,11 @@ import mime from 'mime/lite';
  */
 export async function handleStaticRequest(event) {
   try {
-    const cache = caches.default;
+    // const cache = caches.default;
     const req = getCacheKey(event.request);
 
     if (
       req
-      // static content is our KV bucket binding
       && typeof __STATIC_CONTENT !== "undefined"
     ) {
       const path = normalize_path(new URL(req.url).pathname);
@@ -36,11 +35,14 @@ export async function handleStaticRequest(event) {
       //   event.waitUntil(cache.put(req, res));
       // }
 
-      return res || new Response("not found", { status: 404 })
+      return res
+    } else {
+      return new Response("not found", { status: 404 })
     }
   // first iteration: swallow the error and fall back to Not Found(?)
   } catch(e) {
-    console.log(e)
+    console.log("error", e)
+    return new Response("internal server error", { status: 500 })
   }
 }
 
