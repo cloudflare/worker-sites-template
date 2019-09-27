@@ -35,7 +35,9 @@ async function handleEvent(event) {
   // options.mapRequestToAsset = handlePrefix(/^\/docs/)
 
   try {
-    if (DEBUG) {
+    if (true) {
+      //if(DEBUG)
+      // TODO remove once we solve the cache issue https://github.com/cloudflare/kv-asset-handler/issues/38
       // customize caching
       options.cacheControl = {
         bypassCache: true,
@@ -47,10 +49,17 @@ async function handleEvent(event) {
     if (!DEBUG) {
       try {
         let notFoundResponse = await getAssetFromKV(event, {
-          mapRequestToAsset: req => new Request(`${new URL(req.url).origin}/404.html`, req),
+          cacheControl: {
+            browserTTL: 0, // never cache 404s on browser
+          },
+          mapRequestToAsset: req =>
+            new Request(`${new URL(req.url).origin}/404.html`, req),
         })
 
-        return new Response(notFoundResponse.body, { ...notFoundResponse, status: 404 })
+        return new Response(notFoundResponse.body, {
+          ...notFoundResponse,
+          status: 404,
+        })
       } catch (e) {}
     }
 
