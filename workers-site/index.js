@@ -13,14 +13,8 @@ addEventListener('fetch', event => {
   try {
     event.respondWith(handleEvent(event))
   } catch (e) {
-    if (DEBUG) {
-      return event.respondWith(
-        new Response(e.message || e.toString(), {
-          status: 500,
-        }),
-      )
-    }
-    event.respondWith(new Response('Internal Error', { status: 500 }))
+    const message = DEBUG ? (e.message || e.toString()) : 'Internal Error'
+    event.respondWith(new Response(message, { status: 500 }))
   }
 })
 
