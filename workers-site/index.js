@@ -50,8 +50,11 @@ async function handleEvent(event) {
         let notFoundResponse = await getAssetFromKV(event, {
           mapRequestToAsset: req => new Request(`${new URL(req.url).origin}/404.html`, req),
         })
+        
+        const response = new Response(notFoundResponse.body, { ...notFoundResponse, status: 404 })
+        response.headers.set("content-type", "text/html; charset=utf-8");
 
-        return new Response(notFoundResponse.body, { ...notFoundResponse, status: 404 })
+        return response
       } catch (e) {}
     }
 
