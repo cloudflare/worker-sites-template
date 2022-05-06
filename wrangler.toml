@@ -1,5 +1,5 @@
-account_id = ""
-name = "my-site"
-type = "webpack"
-workers_dev = true
+name = "worker-sites-template"
+main = "src/index.js"
+compatibility_date = "2022-05-06"
+
 site = { bucket = "./public" }
