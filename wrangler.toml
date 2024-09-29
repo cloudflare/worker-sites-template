@@ -1,5 +1,4 @@
-account_id = ""
 name = "my-site"
-type = "webpack"
-workers_dev = true
+main = "workers-site/index.js"
 site = { bucket = "./public" }
+compatibility_date = "2022-09-07"
