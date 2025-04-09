@@ -1,13 +1,28 @@
 {
-  "name": "worker-sites-template",
-  "version": "0.0.0",
-  "devDependencies": {
-    "@cloudflare/kv-asset-handler": "^0.2.0",
-    "wrangler": "0.0.30"
-  },
-  "private": true,
-  "scripts": {
-    "start": "wrangler dev",
-    "publish": "wrangler publish"
-  }
+    "name": "elohimstudio",
+    "version": "1.0.0",
+    "description": "ElohimStudio – Frontend & Backend Example",
+    "main": "server.js",
+    "scripts": {
+        "start": "node server.js"
+    },
+    "dependencies": {
+        "@cloudflare/kv-asset-handler": "^0.4.0",
+        "body-parser": "^1.20.2",
+        "express": "^4.18.2"
+    },
+    "devDependencies": {
+        "wrangler": "^4.2.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Gabeleo24/worker-sites-template.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/Gabeleo24/worker-sites-template/issues"
+    },
+    "homepage": "https://github.com/Gabeleo24/worker-sites-template#readme"
 }

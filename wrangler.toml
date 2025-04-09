@@ -1,5 +1,10 @@
-name = "worker-sites-template"
-main = "src/index.js"
-compatibility_date = "2022-05-06"
+name = "elohimstudio"
+account_id = "618eff06f5fe8b901b52c935582083d2"
+compatibility_date = "2025-03-20"
 
-site = { bucket = "./public" }
+[site]
+bucket = "./public"
+entry-point = "./src"
+
+route = "elohimstudio.co/*"
+workers_dev = false

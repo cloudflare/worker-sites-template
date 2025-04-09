@@ -1,0 +1,308 @@
+/* 
+@font-face {
+  font-family: "SF Pro Medium";
+  src: url("./fonts/SFProDisplay-Medium.woff2") format("woff2"),
+       url("./fonts/SFProDisplay-Medium.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+}
+*/
+
+/* GLOBAL RESET & FONT FALLBACK */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+/* Notion-like custom scrollbar */
+html {
+  background: #2F3B4A; /* Lounge-like dark teal background */
+}
+html::-webkit-scrollbar {
+  width: 8px;
+  background: transparent;
+}
+html::-webkit-scrollbar-thumb {
+  background-color: #b59d6b; /* subtle gold-ish color */
+  border-radius: 4px;
+  visibility: hidden;
+}
+html:hover::-webkit-scrollbar-thumb {
+  visibility: visible;
+}
+
+body {
+  font-family: "SF Pro Medium", -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+  color: #fff;
+  line-height: 1.5;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Links & Buttons default to a subtle gold accent */
+a, button {
+  color: #b59d6b;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+a:hover, button:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
+/* PARTIALLY-WIDE 'ISLAND' HEADER (with logo in center) */
+.main-nav {
+  position: fixed;
+  top: 1rem;
+  left: 2rem;
+  right: 2rem;
+  background: rgba(47, 59, 74, 0.3); 
+  backdrop-filter: blur(6px);
+  padding: 0.5rem 1rem;
+  border-radius: 8px; /* keep a slight roundness */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 9999;
+}
+
+/* Fade-out class to hide header on scroll */
+.main-nav.fade-out {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-10px);
+}
+
+/* NAV INNER: 3 columns (left, center, right) */
+.nav-inner {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 2rem;
+}
+
+/* LEFT MENU */
+.nav-left {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  gap: 2rem; 
+}
+/* Make nav item text smaller (half brand name) */
+.nav-left li a {
+  font-size: 0.625rem; 
+}
+
+/* CENTER LOGO */
+.nav-center {
+  justify-self: center;
+}
+/* Adjust brand logo size as needed */
+.brand-logo {
+  height: 30px;
+  width: auto;
+}
+
+/* RIGHT BUTTON */
+.nav-right {
+  justify-self: end;
+}
+.btn-connect {
+  background: linear-gradient(to right, #b59d6b, #fff); /* gold->white gradient */
+  color: #2F3B4A;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  font-size: 0.625rem; /* match nav item text size */
+}
+.btn-connect:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
+/* DROPDOWN MENU */
+.dropdown {
+  position: relative;
+}
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #364656; 
+  padding: 0.5rem 1rem;
+  list-style: none;
+  border-radius: 4px;
+}
+.dropdown-menu li a {
+  display: block;
+  color: #b59d6b; 
+  text-decoration: none;
+  padding: 0.25rem 0;
+  font-size: 0.625rem;
+}
+.dropdown-menu li a:hover {
+  text-decoration: underline;
+}
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+/* HERO SECTION */
+.hero {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.hero-content {
+  max-width: 900px;
+  margin: 0 auto;
+  background: rgba(255,255,255,0.05); 
+  padding: 2rem;
+  border-radius: 8px;
+}
+.hero h1 {
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: #fff;
+}
+.hero p {
+  font-size: 1.125rem;
+  color: #e0e0e0;
+  max-width: 600px;
+  margin: 0 auto 2rem auto;
+}
+.btn-cta {
+  display: inline-block;
+  font-weight: 700;
+  padding: 0.75rem 1.5rem;
+  border: 1px solid #b59d6b; 
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+  color: #b59d6b;
+}
+.btn-cta:hover {
+  background: #b59d6b;
+  color: #2F3B4A;
+}
+
+/* CONTENT PANELS */
+.content-panel {
+  background: #fff;
+  color: #2F3B4A;
+  max-width: 1100px;
+  margin: 3rem auto;
+  padding: 2rem;
+  border-radius: 6px;
+  border: 1px solid #b59d6b; 
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+.content-panel h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #2F3B4A;
+}
+.content-panel p {
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+/* WORKS GRID */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+}
+.grid-item {
+  background: #f8f8f8;
+  border: 1px solid #eee;
+  padding: 1.5rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-radius: 4px;
+}
+.grid-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+}
+.grid-item h3 {
+  margin-bottom: 0.75rem;
+  font-weight: 700;
+  color: #2F3B4A;
+}
+.grid-item p {
+  color: #666;
+  line-height: 1.6;
+}
+
+/* CONTACT FORM */
+#contactForm label {
+  font-weight: 600;
+}
+#contactForm input,
+#contactForm textarea {
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+#contactForm button {
+  background: #2F3B4A;
+  color: #fff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+#contactForm button:hover {
+  background: #1f2a37;
+}
+
+/* LOCATION MAP */
+#location #map {
+  width: 100%;
+  height: 400px;
+  margin-top: 1rem;
+  border-radius: 4px;
+  border: 1px solid #eee;
+}
+
+/* FOOTER */
+footer {
+  text-align: center;
+  padding: 3rem 2rem;
+  color: #fff;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .nav-inner {
+    grid-template-columns: auto auto;
+    row-gap: 1rem;
+  }
+  .nav-left,
+  .nav-right {
+    justify-content: center;
+  }
+  .dropdown-menu {
+    position: static;
+    border: none;
+    background: #364656;
+  }
+  .content-panel {
+    margin: 2rem 1rem;
+  }
+  .hero-content {
+    margin: 1rem;
+    padding: 1rem;
+  }
+}

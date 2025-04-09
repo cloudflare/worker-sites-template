@@ -1,40 +1,222 @@
-<!doctype html>
-<html>
-    <head>
-        <link rel="icon" type="image/x-icon" href="favicon.ico">
-        <link href="https://fonts.googleapis.com/css?family=Pacifico&display=swap" rel="stylesheet">
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" rel="stylesheet">
-        <style>
-            h1 {
-                font-family: Pacifico, sans-serif;
-                font-size: 4em;
-                color: #3eb5f1;
-                margin: 0;
-            }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ElohimStudio – iPhone-Style Island Header with New Logo</title>
 
-            h2 {
-                font-weight: 300;
-                font-family: sans-serif;
-            }
+  <!-- Optional: Self-Hosted SF Pro Medium -->
+  <!--
+  <style>
+  @font-face {
+    font-family: "SF Pro Medium";
+    src: url("./fonts/SFProDisplay-Medium.woff2") format("woff2"),
+         url("./fonts/SFProDisplay-Medium.woff") format("woff");
+    font-weight: 500;
+    font-style: normal;
+  }
+  </style>
+  -->
 
-            .centered {
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                text-align: center;
-            }
+  <!-- Fallback Google Font: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" />
 
-            #ferris {
-                width: 75%;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="centered">
-            <h1>200 Success</h1>
-            <h2>Hello World! Welcome to your Workers Site.</h2>
-            <img id="ferris" alt="a happy crab is wearing a cowboy hat and holding a lasso. 200 success." src="./img/200-wrangler-ferris.gif">
-        </div>
-    </body>
+  <!-- Leaflet CSS (for interactive map) -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-o9N1+8PVpp3C+gpIBG1P0p2VAc/7Q1MY3RzjF2R3rSI="
+    crossorigin=""
+  />
+
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="./css/styles.css" />
+</head>
+<body>
+
+  <!-- iPhone-Style Island HEADER -->
+  <header class="main-nav">
+    <nav class="nav-inner">
+      <!-- LEFT: Photo, Pricing, Expectations, More (text links) -->
+      <ul class="nav-left">
+        <li><a href="#">Photo</a></li>
+        <li><a href="#">Pricing</a></li>
+        <li><a href="#">Expectations</a></li>
+        <li class="dropdown">
+          <a href="#">More</a>
+          <ul class="dropdown-menu">
+            <li><a href="#">For business</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Other Events</a></li>
+          </ul>
+        </li>
+      </ul>
+
+      <!-- CENTER: New Logo -->
+      <div class="nav-center">
+        <!-- The new logo is stored at public/assets/images/logo.png -->
+        <img src="./assets/images/logo.png" alt="ElohimStudio" class="brand-logo" />
+      </div>
+
+      <!-- RIGHT: Connect Button -->
+      <div class="nav-right">
+        <button class="btn-connect">Connect</button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section id="hero" class="hero">
+    <div class="hero-content">
+      <h1>Capturing Life’s Moments in Orange County & Beyond</h1>
+      <p>
+        We specialize in weddings, events, and creative portrait sessions, proudly based in Orange County yet
+        open for travel photography across different states.
+      </p>
+      <a href="#about" class="btn-cta">Learn More</a>
+    </div>
+  </section>
+
+  <!-- ABOUT SECTION -->
+  <section id="about" class="content-panel">
+    <h2>Our Dedication</h2>
+    <p>
+      ElohimStudio.co is dedicated to combining artistry and technology to push the boundaries of creativity,
+      transforming ideas into immersive experiences that spark inspiration for every client. Whether it’s
+      capturing intimate wedding moments or crafting high-fashion editorials, our passion lies in telling
+      authentic stories through the lens.
+    </p>
+    <p>
+      From the beaches of Southern California to the mountains of Colorado, our commitment to travel ensures
+      we can meet you wherever your vision takes us. Let’s collaborate to preserve life’s milestones in a
+      minimal, modern style that resonates long after the moment has passed.
+    </p>
+  </section>
+
+  <!-- WORKS SECTION -->
+  <section id="works" class="content-panel">
+    <h2>Featured Projects</h2>
+    <p>
+      Explore a curated selection of our most memorable shoots—ranging from heartfelt ceremonies to dynamic
+      brand campaigns.
+    </p>
+    <div class="grid">
+      <div class="grid-item">
+        <h3>Wedding Bliss</h3>
+        <p>Capturing the joy of a beachside ceremony with elegant, documentary-style photos.</p>
+      </div>
+      <div class="grid-item">
+        <h3>Fashion Forward</h3>
+        <p>A modern portrait series for an emerging clothing line, focusing on minimal backgrounds and bold poses.</p>
+      </div>
+      <div class="grid-item">
+        <h3>Adventurous Spirits</h3>
+        <p>On-location shoots at mountain cabins, celebrating the free-spirited nature of the outdoors.</p>
+      </div>
+      <div class="grid-item">
+        <h3>Editorial Dreams</h3>
+        <p>High-contrast studio sessions designed to highlight intricate details and dramatic lighting.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT SECTION -->
+  <section id="contact" class="content-panel">
+    <h2>Get in Touch</h2>
+    <p>Ready to book your session or have a question? Let’s connect!</p>
+    <form id="contactForm">
+      <div>
+        <label for="name">Name</label>
+        <input id="name" name="name" type="text" required>
+      </div>
+      <div>
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" required>
+      </div>
+      <div>
+        <label for="message">Message</label>
+        <textarea id="message" name="message" rows="4" required></textarea>
+      </div>
+      <button type="submit">Send</button>
+    </form>
+  </section>
+
+  <!-- LOCATION SECTION (Interactive Map) -->
+  <section id="location" class="content-panel">
+    <h2>Find Us</h2>
+    <p>Based in Orange County, CA – Open to travel</p>
+    <div id="map"></div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 ElohimStudio. All rights reserved.</p>
+  </footer>
+
+  <!-- Leaflet JS -->
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-Qg6fg9NhR9uK/bNn1jgpmmNacLF8ph1d2QQTBrN2jNs="
+    crossorigin="">
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      /* CONTACT FORM SUBMISSION (Optional) */
+      const contactForm = document.getElementById('contactForm');
+      if (contactForm) {
+        contactForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const formData = new FormData(contactForm);
+          const data = Object.fromEntries(formData.entries());
+
+          try {
+            // Example: POST to /api/contact (Node/Express or Cloudflare Worker)
+            const response = await fetch('/api/contact', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(data)
+            });
+            const result = await response.json();
+            alert(result.message || 'Form submitted successfully!');
+            contactForm.reset();
+          } catch (error) {
+            console.error('Error submitting form:', error);
+            alert('Failed to submit form. Please try again.');
+          }
+        });
+      }
+
+      /* LEAFLET MAP INIT */
+      const map = L.map('map').setView([33.7456, -117.8677], 10);
+      // ^ Coordinates for Orange County, CA (adjust as needed)
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '© OpenStreetMap'
+      }).addTo(map);
+
+      // Add a marker with a popup
+      const marker = L.marker([33.7456, -117.8677]).addTo(map);
+      marker.bindPopup('<b>ElohimStudio</b><br>Orange County, CA').openPopup();
+
+      // FLOATING HEADER FADE LOGIC
+      let lastScrollY = 0;
+      const header = document.querySelector('.main-nav');
+
+      window.addEventListener('scroll', () => {
+        const currentScrollY = window.scrollY;
+        // If scrolling down beyond 50px from last position, fade out
+        if (currentScrollY > 50 && currentScrollY > lastScrollY) {
+          header.classList.add('fade-out');
+        } else {
+          // Otherwise fade back in
+          header.classList.remove('fade-out');
+        }
+        lastScrollY = currentScrollY;
+      });
+    });
+  </script>
+</body>
 </html>

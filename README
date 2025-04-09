@@ -1,0 +1,235 @@
+        ┌─────────────┐        ┌─────────────────────────┐
+        │   Visitor    │        │   Third-Party Services  │
+        │ (Browser)    │        │ (Affirm, Analytics, etc.) 
+        └──────┬───────┘        └─────────┬───────────────┘
+               │                          │
+   (1) Requests │                          │ (7) Analytics
+               ▼                          ▼
+        ┌─────────────┐        ┌─────────────────────────┐
+        │  Front End  │        │   Analytics Dashboard    │
+        │(HTML/CSS/JS)│        │(Google Analytics, etc.) │
+        └──────┬───────┘        └─────────┬───────────────┘
+               │ (2) Form Submissions      │ (8) Data Queries
+               ▼                          ▼
+        ┌──────────────────────────────────┐
+        │            Back End             │
+        │ (Node/Express or Serverless)    │
+        └──────┬──────────────────────────┘
+               │ (3) Validate Data
+               ▼
+        ┌──────────────────────────────────┐
+        │      SQL Database (e.g.         │
+        │  MySQL/PostgreSQL/Azure SQL)    │
+        └──────┬──────────────────────────┘
+               │ (4) Insert / Retrieve
+               ▼
+        ┌──────────────────────────────────┐
+        │  Referral Logic & Other Tables  │
+        │ (e.g. signups, sessions, etc.)  │
+        └──────┬──────────────────────────┘
+               │ (5) Confirmation / Results
+               ▼
+        ┌─────────────┐
+        │   Admin or  │
+        │   You!      │
+        └─────────────┘
+
+        Below is a high-level website pipeline showing how visitors interact with your site, how data (e.g., signups, referrals) is processed and stored, and how you can gather analytics in a SQL database. This pipeline also outlines adding a referral program and analytics so you can track user signups, page views, and more.
+
+⸻
+
+1. Overview Diagram
+
+A typical pipeline for your photography website might look like this:
+
+        ┌─────────────┐        ┌─────────────────────────┐
+        │   Visitor    │        │   Third-Party Services  │
+        │ (Browser)    │        │ (Affirm, Analytics, etc.) 
+        └──────┬───────┘        └─────────┬───────────────┘
+               │                          │
+   (1) Requests │                          │ (7) Analytics
+               ▼                          ▼
+        ┌─────────────┐        ┌─────────────────────────┐
+        │  Front End  │        │   Analytics Dashboard    │
+        │(HTML/CSS/JS)│        │(Google Analytics, etc.) │
+        └──────┬───────┘        └─────────┬───────────────┘
+               │ (2) Form Submissions      │ (8) Data Queries
+               ▼                          ▼
+        ┌──────────────────────────────────┐
+        │            Back End             │
+        │ (Node/Express or Serverless)    │
+        └──────┬──────────────────────────┘
+               │ (3) Validate Data
+               ▼
+        ┌──────────────────────────────────┐
+        │      SQL Database (e.g.         │
+        │  MySQL/PostgreSQL/Azure SQL)    │
+        └──────┬──────────────────────────┘
+               │ (4) Insert / Retrieve
+               ▼
+        ┌──────────────────────────────────┐
+        │  Referral Logic & Other Tables  │
+        │ (e.g. signups, sessions, etc.)  │
+        └──────┬──────────────────────────┘
+               │ (5) Confirmation / Results
+               ▼
+        ┌─────────────┐
+        │   Admin or  │
+        │   You!      │
+        └─────────────┘
+
+Key Steps:
+	1.	Visitor loads the site (front end).
+	2.	Form submissions (e.g., “Book a Photoshoot,” “Sign up,” or “Referral”) go to your back end.
+	3.	The back end validates data and calls your SQL database to insert or retrieve info (e.g., user info, referral codes).
+	4.	Data is stored in structured tables (like users, referrals, bookings).
+	5.	The user receives a confirmation (like “Thank you, we’ll be in touch!”).
+	6.	Analytics events (like page views, signups) can be tracked via Google Analytics or a custom solution.
+	7.	You can use an analytics dashboard to visualize traffic, conversions, etc.
+	8.	You can query the SQL database for advanced analytics or integrate with BI tools to track your referral program and leads.
+
+⸻
+
+2. Front End (Client-Side)
+	•	HTML/CSS/JS (or a framework like React, Next.js, Vue, etc.):
+	•	Displays your hero, packages, portfolio and any sign-up forms.
+	•	Referral program link or code input: a user might come with a referral link (e.g., ?ref=ABC123) or type in a referral code on a sign-up form.
+	•	Affirm integration for buy-now-pay-later can appear on relevant package purchase flows.
+	•	Form Handling:
+	•	Book a photoshoot or Sign up forms gather user data (name, email, event details, referral code, etc.).
+	•	Data is sent to your back end via fetch/XHR or a traditional form submit.
+	•	Analytics Tracking:
+	•	Google Analytics snippet or a privacy-friendly alternative (e.g., Plausible, Matomo) for page views, button clicks, sign-up conversions, etc.
+	•	Optionally track custom events (e.g., “Clicked on Affirm,” “Submitted referral code”).
+
+⸻
+
+3. Back End
+
+You have two main approaches:
+
+A. Traditional Server (Node + Express or similar)
+	1.	Endpoints for form submissions, e.g. POST /api/book or POST /api/signup.
+	2.	Validates incoming data (e.g., ensuring email is valid, checking referral code).
+	3.	Stores user data in the SQL database.
+	4.	Handles business logic: e.g., if a referral code is valid, add referral credit to the referrer’s record.
+	5.	Sends an email confirmation or triggers a payment flow (like Affirm or Stripe).
+
+B. Serverless Functions (AWS Lambda, Azure Functions, Netlify, Vercel, etc.)
+	1.	Each function is an endpoint. For instance, POST /api/book is a single function that runs on submission.
+	2.	Same steps as above: data validation, DB insertion, referral logic.
+	3.	Scales automatically, often simpler to deploy for smaller projects.
+
+In either approach, the back end communicates with your SQL database to read/write user data.
+
+⸻
+
+4. SQL Database
+
+A relational database (like MySQL, PostgreSQL, or Azure SQL) is used to store:
+	•	Users table:
+	•	id, name, email, signup_date, etc.
+	•	Possibly store referral_code or referred_by if someone was referred.
+	•	Bookings table:
+	•	id, user_id, event_type (wedding, portrait, etc.), date, location, package_selected, etc.
+	•	Referrals table (optional, or you can store it in Users):
+	•	id, referrer_user_id, referred_user_id, referral_code, status (pending, completed), reward_amount, etc.
+	•	Analytics table (optional if you want to store custom events in your own DB):
+	•	id, event_name, timestamp, user_id, page_url, etc.
+
+Referral Program logic:
+	•	When a new user signs up with ref=CODE123, the back end:
+	1.	Looks up the user who owns CODE123.
+	2.	Creates a record in Referrals linking the new user to the existing user.
+	3.	Possibly sets a reward or discount for both parties (e.g., “Referrer gets $50 off next shoot,” “Referee gets 10% discount.”)
+
+Data Security:
+	•	Use parameterized queries or an ORM (Sequelize, TypeORM, Prisma) to avoid SQL injection.
+	•	Store sensitive data (like user emails) securely.
+	•	Ensure compliance with privacy laws if storing personal data.
+
+⸻
+
+5. Analytics & Dashboard
+	1.	Google Analytics (GA4) or another tool:
+	•	Add the tracking code snippet to your site.
+	•	Track page views, conversions (like signups, bookings), and referral link usage.
+	•	GA automatically collects a lot of data, which you can view in the GA dashboard.
+	2.	SQL-based Analytics:
+	•	If you want deeper analysis, store sign-up or event data in your own tables.
+	•	Use a BI tool (Tableau, Power BI, Metabase, Redash, etc.) to connect to your SQL DB.
+	•	Create custom dashboards showing signups over time, referrals, booking types, etc.
+	3.	Admin Panel (Optional):
+	•	Build a secure admin panel or use a headless BI tool to see your data.
+	•	View all users, bookings, referrals, and analytics in one place.
+	•	Mark referrals as “paid out” or “completed.”
+	•	Adjust user roles or statuses.
+
+⸻
+
+6. Putting It All Together
+	1.	Visitor lands on your site.
+	2.	Analytics logs a page view.
+	3.	If the visitor clicks “Book Now” or “Sign Up,” a form is displayed.
+	4.	The visitor enters details + optional referral code.
+	5.	Front End sends this data via POST to your Back End.
+	6.	The Back End:
+	•	Validates data.
+	•	Checks if referral code is valid (looking it up in your Users or Referrals table).
+	•	Inserts the new user or booking into your SQL DB.
+	•	If valid referral, updates the referrer’s record or the Referrals table.
+	7.	Confirmation is sent back to the user (and possibly an email).
+	8.	Analytics logs a “sign-up” or “booking” event.
+	9.	You can then log in to your admin or analytics dashboard to see who signed up, if a referral was used, etc.
+	10.	Over time, you can query your SQL DB to generate insights: e.g., “How many referred signups do we get monthly?” or “Which referral codes are the most successful?”
+
+⸻
+
+7. Considerations & Recommendations
+	•	Data Privacy & Security:
+	•	Ensure you’re following relevant data protection laws (GDPR, CCPA if applicable).
+	•	Use HTTPS for all form submissions.
+	•	Scalability:
+	•	If you expect many signups, ensure your DB can handle the load.
+	•	Use caching or load balancing if needed.
+	•	Referral Program Implementation:
+	•	Decide on the incentive (discount, cash reward, freebies).
+	•	Decide if you want to auto-apply the reward or require manual admin approval.
+	•	Possibly track “referral success” if the referred user completes a booking or payment.
+	•	Payment & Affirm:
+	•	If you accept online payments, you might integrate Stripe or PayPal.
+	•	For Affirm BNPL, you already have a snippet. Make sure the final order data is also stored in your DB to track revenue and user details.
+	•	Analytics Depth:
+	•	If you want advanced funnel tracking (e.g., “X% of users who see the packages page actually book a shoot”), set up Goals or Conversions in GA4 or your chosen analytics platform.
+	•	If you want raw event data in SQL, you can create an Events table.
+
+⸻
+
+Example Tech Stack
+	•	Front End:
+	•	React/Next.js or pure HTML/CSS/JS with a build system.
+	•	Affirm snippet, Google Analytics snippet.
+	•	Back End:
+	•	Node.js with Express or a serverless platform (AWS Lambda, Vercel, Netlify).
+	•	APIs: POST /api/signup, POST /api/booking, etc.
+	•	Database:
+	•	MySQL, PostgreSQL, or a managed cloud SQL solution (Azure SQL, AWS RDS, etc.).
+	•	Admin Panel:
+	•	Could be a separate Next.js/React app or a simple server-rendered admin behind login.
+	•	Alternatively, use a self-hosted analytics dashboard like Metabase to visualize data from your DB.
+	•	Referral Program:
+	•	Each user has a referral_code (e.g., random string or user ID–based).
+	•	New signups can provide that code.
+	•	Logic in back end updates the referrals table.
+
+⸻
+
+Conclusion
+
+By combining a front-end website (with sign-up forms and referral code fields), a back end (handling logic, database writes, Affirm integration), a SQL database (storing user data, referrals, bookings), and an analytics layer (Google Analytics, plus optional custom SQL queries), you’ll have a complete pipeline. You can:
+	•	Track signups, bookings, and conversions.
+	•	Offer a referral program with unique codes and store them in your DB.
+	•	Analyze data in real time or via a dashboard.
+	•	Grow your photography business with insights into which categories (weddings, corporate, etc.) or which referrals generate the most leads.
+
+This setup is flexible: you can start small (simple form + single DB table) and scale up as your user base grows, adding more advanced analytics, referral incentives, or specialized admin dashboards.
